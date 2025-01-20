@@ -1,6 +1,6 @@
 # ColorChooser
 
-A simple JavaFX-based application to pick colors wits options for adjusting the RGB value.
+A simple JavaFX-based application to pick colors with options for adjusting the RGB value.
 
 ## Features
 - Adjust the Red (R), Green (G), or Blue (B) value using sliders to change the color.
