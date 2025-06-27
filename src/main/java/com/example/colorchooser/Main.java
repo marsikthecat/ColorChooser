@@ -7,24 +7,25 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-/***
- * <p> </p>
+/**
  * Generates Random Color.
- * 214 lines of code for whole projekt.
+ * 219 lines of code for whole projekt.
  */
 
 public class Main extends Application {
 
-  private RgbColor color;
+  private final RgbColor color = new RgbColor(0,0,0);
 
   @Override
   public void start(Stage primaryStage) {
@@ -37,47 +38,43 @@ public class Main extends Application {
       numbers.add(i);
     }
 
-    Slider slider1 = new Slider(0, 256, 1);
-    Slider slider2 = new Slider(0, 256, 1);
-    Slider slider3 = new Slider(0, 256, 1);
-    Label sliderValueLabel1 = new Label("R: " + (int) slider1.getValue());
-    Label sliderValueLabel2 = new Label("G: " + (int) slider2.getValue());
-    Label sliderValueLabel3 = new Label("B: " + (int) slider3.getValue());
-    HBox.setMargin(sliderValueLabel1, new Insets(0, 10, 0, 0));
-    HBox.setMargin(sliderValueLabel2, new Insets(0, 10, 0, 0));
-    HBox.setMargin(sliderValueLabel3, new Insets(0, 10, 0, 0));
-    setupSliderValueLabels(sliderValueLabel1, sliderValueLabel2, sliderValueLabel3);
+    Slider slider1 = new Slider(0, 256, color.getR());
+    Slider slider2 = new Slider(0, 256, color.getG());
+    Slider slider3 = new Slider(0, 256, color.getB());
     setupSlider(slider1, slider2, slider3);
 
+    Text sliderLabel1 = new Text("R: " + (int) slider1.getValue());
+    Text sliderLabel2 = new Text("G: " + (int) slider2.getValue());
+    Text sliderLabel3 = new Text("B: " + (int) slider3.getValue());
+    setupSliderLabels(sliderLabel1, sliderLabel2, sliderLabel3);
+
     VBox content = new VBox();
+    content.setStyle(color.getStyleDefinition());
     content.setSpacing(10);
     content.setAlignment(Pos.CENTER);
 
     slider1.valueProperty().addListener((observable, oldValue, newValue) -> {
-      RgbColor inputColor = new RgbColor(newValue.intValue(), (int) slider2.getValue(),
-              (int) slider3.getValue());
-      content.setStyle(inputColor.getStyleDefinition());
-      sliderValueLabel1.setText("R: " + newValue.intValue());
+      color.setR(newValue.intValue());
+      content.setStyle(color.getStyleDefinition());
+      sliderLabel1.setText("R: " + newValue.intValue());
     });
     slider2.valueProperty().addListener((observable, oldValue, newValue) -> {
-      RgbColor inputColor = new RgbColor((int) slider1.getValue(), newValue.intValue(),
-              (int) slider3.getValue());
-      content.setStyle(inputColor.getStyleDefinition());
-      sliderValueLabel2.setText("G: " + newValue.intValue());
+      color.setG(newValue.intValue());
+      content.setStyle(color.getStyleDefinition());
+      sliderLabel2.setText("G: " + newValue.intValue());
     });
     slider3.valueProperty().addListener((observable, oldValue, newValue) -> {
-      RgbColor inputColor = new RgbColor((int) slider1.getValue(), (int) slider2.getValue(),
-              newValue.intValue());
-      content.setStyle(inputColor.getStyleDefinition());
-      sliderValueLabel3.setText("B: " + newValue.intValue());
+      color.setB(newValue.intValue());
+      content.setStyle(color.getStyleDefinition());
+      sliderLabel3.setText("B: " + newValue.intValue());
     });
 
     HBox box1 = new HBox();
-    box1.getChildren().addAll(sliderValueLabel1, slider1);
+    box1.getChildren().addAll(sliderLabel1, slider1);
     HBox box2 = new HBox();
-    box2.getChildren().addAll(sliderValueLabel2, slider2);
+    box2.getChildren().addAll(sliderLabel2, slider2);
     HBox box3 = new HBox();
-    box3.getChildren().addAll(sliderValueLabel3, slider3);
+    box3.getChildren().addAll(sliderLabel3, slider3);
     VBox.setMargin(box1, new Insets(10, 0, 0, 0));
     VBox.setMargin(box2, new Insets(10, 0, 0, 0));
     VBox.setMargin(box3, new Insets(10, 0, 0, 0));
@@ -90,24 +87,22 @@ public class Main extends Application {
     content.getChildren().addAll(box1, box2, box3, btnContainer);
 
     createBtn.setOnAction(e -> {
-      color = new RgbColor();
-      sliderValueLabel1.setText("R: " + color.getR());
+      color.createRandomColors();
+      sliderLabel1.setText("R: " + color.getR());
       slider1.setValue(color.getR());
-      sliderValueLabel2.setText("G: " + color.getG());
+      sliderLabel2.setText("G: " + color.getG());
       slider2.setValue(color.getG());
-      sliderValueLabel3.setText("B: " + color.getB());
+      sliderLabel3.setText("B: " + color.getB());
       slider3.setValue(color.getB());
       content.setStyle(color.getStyleDefinition());
     });
 
     copyBtn.setOnAction(e -> {
-      if (color != null) {
-        String text = color.getRgb();
-        final Clipboard clipboard = Clipboard.getSystemClipboard();
-        final ClipboardContent copyContent = new ClipboardContent();
-        copyContent.putString(text);
-        clipboard.setContent(copyContent);
-      }
+      String text = color.getRgb();
+      final Clipboard clipboard = Clipboard.getSystemClipboard();
+      final ClipboardContent copyContent = new ClipboardContent();
+      copyContent.putString(text);
+      clipboard.setContent(copyContent);
     });
     Scene scene = new Scene(content, 400, 200);
     primaryStage.setScene(scene);
@@ -136,11 +131,13 @@ public class Main extends Application {
     }
   }
 
-  private void setupSliderValueLabels(Label ... l) {
-    for (Label labels : l) {
-      labels.setPrefWidth(60);
-      labels.setFont(new Font("Arial", 15));
-      labels.setStyle("-fx-background-color: white; -fx-padding: 5px");
+  private void setupSliderLabels(Text ... texts) {
+    for (Text text : texts) {
+      text.setFont(Font.font("Arial", FontWeight.BOLD, 25));
+      text.setStroke(Color.WHITE);
+      text.setStrokeWidth(1);
+      text.setFill(Color.BLACK);
+      text.setWrappingWidth(80);
     }
   }
 
