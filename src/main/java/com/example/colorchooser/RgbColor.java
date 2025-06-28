@@ -46,6 +46,9 @@ public class RgbColor {
     this.red = red;
   }
 
+  /**
+     * Generates a random RGB Color.
+   */
   public void createRandomColors() {
     Random random = new Random();
     this.blue = random.nextInt(256);

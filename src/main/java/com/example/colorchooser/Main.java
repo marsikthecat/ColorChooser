@@ -25,7 +25,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-  private final RgbColor color = new RgbColor(0,0,0);
+  private final RgbColor color = new RgbColor(0, 0, 0);
 
   @Override
   public void start(Stage primaryStage) {
@@ -110,6 +110,10 @@ public class Main extends Application {
     primaryStage.setResizable(false);
     primaryStage.show();
   }
+
+  /**
+   * .
+   */
 
   public static void main(String[] args) {
     launch(args);
