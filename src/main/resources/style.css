@@ -1,0 +1,37 @@
+.button, .menu-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.button:hover, .menu-button:hover {
+    -fx-background-color: #4DDD50;
+}
+
+.menu-button > .label {
+    -fx-text-fill: white;
+}
+
+.slider-label {
+    -fx-font-family: "Arial";
+    -fx-font-weight: bold;
+    -fx-font-size: 21px;
+    -fx-text-fill: black;
+}
+
+.slider-box {
+    -fx-spacing: 35px;
+    -fx-alignment: center;
+    -fx-padding: 8px;
+    -fx-pref-width: 310px;
+    -fx-pref-height: 150px;
+    -fx-background-color: #f0f0f0;
+}
+
+.label-box {
+    -fx-spacing: 20px;
+    -fx-alignment: center;
+    -fx-pref-width: 90px;
+    -fx-pref-height: 150px;
+}
