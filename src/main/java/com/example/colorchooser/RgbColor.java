@@ -54,7 +54,6 @@ public class RgbColor {
     this.red = random.nextInt(256);
   }
 
-
   public String getStyleDefinition() {
     return String.format("-fx-background-color: rgb(%d, %d, %d);", red, green, blue);
   }
@@ -64,7 +63,7 @@ public class RgbColor {
   }
 
   /**
-   * returns the Hex value of the rgb-color.
+   * Returns the Hex value of the rgb-color.
    */
   public String getHex() {
     String redHex = Integer.toHexString(red);

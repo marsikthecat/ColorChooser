@@ -19,7 +19,9 @@ import javafx.stage.Stage;
 
 /**
  * App that generates random color with clipboard feature.
- * 219 lines + 37 lines of css.
+ * Main: 134 lines.
+ * RgbColor: 78 lines.
+ * 212 lines + 37 lines of CSS.
  */
 
 public class Main extends Application {
@@ -32,11 +34,11 @@ public class Main extends Application {
     createBtn.getStyleClass().addAll("button");
 
     MenuItem item1 = new MenuItem("RGB");
-    item1.setOnAction(e -> toClickBoard(color.getRgb()));
+    item1.setOnAction(_ -> toClickBoard(color.getRgb()));
     MenuItem item2 = new MenuItem("HEX");
-    item2.setOnAction(e -> toClickBoard(color.getHex()));
+    item2.setOnAction(_ -> toClickBoard(color.getHex()));
     MenuItem item3 = new MenuItem("CMY");
-    item3.setOnAction(e -> toClickBoard(color.getCmy()));
+    item3.setOnAction(_ -> toClickBoard(color.getCmy()));
 
     MenuButton copyBtn = new MenuButton("Copy RGB Value", null, item1, item2, item3);
     copyBtn.getStyleClass().add("menu-button");
@@ -72,17 +74,17 @@ public class Main extends Application {
     content.setSpacing(10);
     content.setAlignment(Pos.CENTER);
 
-    slider1.valueProperty().addListener((observable, oldValue, newValue) -> {
+    slider1.valueProperty().addListener((_, _, newValue) -> {
       color.setR(newValue.intValue());
       sliderBox.setStyle(color.getStyleDefinition());
       sliderLabel1.setText("R: " + newValue.intValue());
     });
-    slider2.valueProperty().addListener((observable, oldValue, newValue) -> {
+    slider2.valueProperty().addListener((_, _, newValue) -> {
       color.setG(newValue.intValue());
       sliderBox.setStyle(color.getStyleDefinition());
       sliderLabel2.setText("G: " + newValue.intValue());
     });
-    slider3.valueProperty().addListener((observable, oldValue, newValue) -> {
+    slider3.valueProperty().addListener((_, _, newValue) -> {
       color.setB(newValue.intValue());
       sliderBox.setStyle(color.getStyleDefinition());
       sliderLabel3.setText("B: " + newValue.intValue());
@@ -95,7 +97,7 @@ public class Main extends Application {
     HBox upperHalf = new HBox(labelBox, sliderBox);
     content.getChildren().addAll(upperHalf, btnContainer);
 
-    createBtn.setOnAction(e -> {
+    createBtn.setOnAction(_ -> {
       color.createRandomColors();
       sliderLabel1.setText("R: " + color.getR());
       slider1.setValue(color.getR());
@@ -115,7 +117,7 @@ public class Main extends Application {
     primaryStage.show();
   }
 
-  private void setupSlider(Slider ... slider) {
+  private void setupSlider(Slider... slider) {
     for (Slider sliders : slider) {
       sliders.setValue(0);
       sliders.setMajorTickUnit(16);
@@ -129,12 +131,5 @@ public class Main extends Application {
     final ClipboardContent copyContent = new ClipboardContent();
     copyContent.putString(txt);
     clipboard.setContent(copyContent);
-  }
-
-  /**
-   * Main method. What else do I got to say.
-   */
-  public static void main(String[] args) {
-    launch(args);
   }
 }
